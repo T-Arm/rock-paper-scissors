@@ -1,8 +1,9 @@
-const playerScore = document.getElementById("playerScore")
-const pcSCore = document.getElementById("pcScore")
+const showPlayerScore = document.getElementById("playerScore")
+const showBotScore = document.getElementById("pcScore")
 const rockBtn = document.getElementById("rock")
 const paperBtn = document.getElementById("paper")
 const scissorsBtn = document.getElementById("scissors")
+const screen = document.getElementById("gameMoment")
 
 let compare = ["", "rock", "paper", "scissors"]
 
@@ -17,6 +18,19 @@ function cIndex(choice){
     }
 }
 }
+
+let botScore = 0
+let playerScore = 0
+function upScore(winner){
+    if(winner == "player"){
+        playerScore++
+        showPlayerScore.innerHTML = playerScore
+    }else if(winner == "PC"){
+        botScore++
+        showBotScore.innerHTML = botScore
+    }
+}
+
 function play(pChoice, botChoice){
     console.log(pChoice + "   " + botChoice)
     if(pChoice == botChoice){
@@ -31,19 +45,31 @@ function play(pChoice, botChoice){
         console.log(cIndex(pChoice) + "   " + cIndex(botChoice))
     }
     if(cIndex(pChoice) == cIndex(botChoice) - 1){
+        upScore("PC")
         return("PC Wins")
     }else if(cIndex(pChoice) == cIndex(botChoice) + 1){
+        upScore("player")
         return("You Win!!")
     }
     
 }
 
+function showGame(secs,pChoice){
+    screen.style.fontSize = "100px"
+    if(secs == 0){
+        screen.style.fontSize = "70px"
+        screen.innerHTML = play(pChoice, pcChoice())
+    }else{
+        screen.innerHTML = secs
+        setTimeout(showGame, 750, secs-1, pChoice)
+    }
+}
 rockBtn.addEventListener("click", function(){
-    console.log(play("rock", pcChoice()))
+    showGame(3, "rock")
 })
 paperBtn.addEventListener("click", function(){
-    console.log(play("paper",pcChoice()))
+    showGame(3, "paper")
 })
 scissorsBtn.addEventListener("click", function(){
-    console.log(play("scissors", pcChoice()))
+    showGame(3, "scissors")
 })
